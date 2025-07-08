@@ -16,6 +16,7 @@ class SpinWheel {
         ];
         
         this.initEventListeners();
+        this.loadSavedGames();
         this.updateDisplay();
     }
     
@@ -51,6 +52,19 @@ class SpinWheel {
             if (!this.isSpinning && this.names.length >= 2 && availableNames.length > 0) {
                 this.spin();
             }
+        });
+        
+        // Game management event listeners
+        document.getElementById('saveGameBtn').addEventListener('click', () => {
+            this.saveGame();
+        });
+        
+        document.getElementById('gameLoadSelect').addEventListener('change', (e) => {
+            this.loadGame(e.target.value);
+        });
+        
+        document.getElementById('deleteGameBtn').addEventListener('click', () => {
+            this.deleteGame();
         });
     }
     
@@ -460,6 +474,135 @@ class SpinWheel {
         setTimeout(() => {
             input.style.borderColor = '#e0e0e0';
             input.placeholder = 'Enter a name (2-40 names total)';
+        }, 3000);
+    }
+    
+    // Game Management Methods
+    saveGame() {
+        const gameNameInput = document.getElementById('gameNameInput');
+        const gameName = gameNameInput.value.trim();
+        
+        if (!gameName) {
+            this.showGameError('Please enter a game name');
+            return;
+        }
+        
+        const gameState = {
+            names: this.names,
+            currentRotation: this.currentRotation,
+            savedAt: new Date().toISOString()
+        };
+        
+        try {
+            const savedGames = JSON.parse(localStorage.getItem('spinWheelGames') || '{}');
+            savedGames[gameName] = gameState;
+            localStorage.setItem('spinWheelGames', JSON.stringify(savedGames));
+            
+            gameNameInput.value = '';
+            this.loadSavedGames();
+            this.showGameSuccess(`Game "${gameName}" saved successfully!`);
+        } catch (error) {
+            this.showGameError('Failed to save game');
+        }
+    }
+    
+    loadGame(gameName) {
+        if (!gameName) {
+            document.getElementById('deleteGameBtn').disabled = true;
+            return;
+        }
+        
+        try {
+            const savedGames = JSON.parse(localStorage.getItem('spinWheelGames') || '{}');
+            const gameState = savedGames[gameName];
+            
+            if (!gameState) {
+                this.showGameError('Game not found');
+                return;
+            }
+            
+            // Load game state
+            this.names = gameState.names || [];
+            this.currentRotation = gameState.currentRotation || 0;
+            this.isSpinning = false;
+            this.preSelectedWinner = null;
+            
+            // Update UI
+            this.hideResult();
+            this.updateDisplay();
+            this.drawWheel();
+            
+            // Enable delete button
+            document.getElementById('deleteGameBtn').disabled = false;
+            
+            this.showGameSuccess(`Game "${gameName}" loaded successfully!`);
+        } catch (error) {
+            this.showGameError('Failed to load game');
+        }
+    }
+    
+    deleteGame() {
+        const gameLoadSelect = document.getElementById('gameLoadSelect');
+        const gameName = gameLoadSelect.value;
+        
+        if (!gameName) return;
+        
+        if (confirm(`Are you sure you want to delete the game "${gameName}"?`)) {
+            try {
+                const savedGames = JSON.parse(localStorage.getItem('spinWheelGames') || '{}');
+                delete savedGames[gameName];
+                localStorage.setItem('spinWheelGames', JSON.stringify(savedGames));
+                
+                gameLoadSelect.value = '';
+                document.getElementById('deleteGameBtn').disabled = true;
+                this.loadSavedGames();
+                this.showGameSuccess(`Game "${gameName}" deleted successfully!`);
+            } catch (error) {
+                this.showGameError('Failed to delete game');
+            }
+        }
+    }
+    
+    loadSavedGames() {
+        const gameLoadSelect = document.getElementById('gameLoadSelect');
+        
+        try {
+            const savedGames = JSON.parse(localStorage.getItem('spinWheelGames') || '{}');
+            const gameNames = Object.keys(savedGames).sort();
+            
+            // Clear existing options except the first one
+            gameLoadSelect.innerHTML = '<option value="">Load a saved game...</option>';
+            
+            gameNames.forEach(gameName => {
+                const option = document.createElement('option');
+                option.value = gameName;
+                option.textContent = gameName;
+                gameLoadSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Failed to load saved games:', error);
+        }
+    }
+    
+    showGameError(message) {
+        const gameNameInput = document.getElementById('gameNameInput');
+        gameNameInput.style.borderColor = '#dc3545';
+        gameNameInput.placeholder = message;
+        
+        setTimeout(() => {
+            gameNameInput.style.borderColor = '#e0e0e0';
+            gameNameInput.placeholder = 'Enter game name';
+        }, 3000);
+    }
+    
+    showGameSuccess(message) {
+        const gameNameInput = document.getElementById('gameNameInput');
+        gameNameInput.style.borderColor = '#28a745';
+        gameNameInput.placeholder = message;
+        
+        setTimeout(() => {
+            gameNameInput.style.borderColor = '#e0e0e0';
+            gameNameInput.placeholder = 'Enter game name';
         }, 3000);
     }
 }

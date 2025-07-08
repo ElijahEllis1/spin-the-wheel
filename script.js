@@ -133,14 +133,10 @@ class SpinWheel {
         
         // Update spin button
         const spinBtn = document.getElementById('spinBtn');
-        const availableNames = this.names.filter(n => n && !n.isWinner);
         
         if (this.names.length < 2) {
             spinBtn.disabled = true;
             spinBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i><span>Need 2+ Names</span>';
-        } else if (availableNames.length === 0) {
-            spinBtn.disabled = true;
-            spinBtn.innerHTML = '<i class="fas fa-trophy"></i><span>All names have already won</span>';
         } else if (this.isSpinning) {
             spinBtn.disabled = true;
             spinBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>SPINNING</span>';
@@ -264,7 +260,14 @@ class SpinWheel {
         if (this.isSpinning) return;
         
         const availableNames = this.names.filter(n => n && !n.isWinner);
-        if (availableNames.length === 0 || this.names.length < 2) return;
+        
+        // Auto-reset when all names have been selected
+        if (availableNames.length === 0 && this.names.length >= 2) {
+            this.resetGame();
+            return;
+        }
+        
+        if (this.names.length < 2) return;
         
         this.isSpinning = true;
         const spinBtn = document.getElementById('spinBtn');

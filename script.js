@@ -66,6 +66,14 @@ class SpinWheel {
         document.getElementById('deleteGameBtn').addEventListener('click', () => {
             this.deleteGame();
         });
+        
+        // Toggle winners visibility
+        const toggleWinnersBtn = document.getElementById('toggleWinnersBtn');
+        if (toggleWinnersBtn) {
+            toggleWinnersBtn.addEventListener('click', () => {
+                this.toggleWinnersVisibility();
+            });
+        }
     }
     
     addName() {
@@ -209,7 +217,7 @@ class SpinWheel {
             this.ctx.lineWidth = 3;
             this.ctx.stroke();
             
-            // Text
+            // Text - render vertically along radius direction
             const textAngle = startAngle + anglePerSegment / 2;
             const textRadius = radius * 0.7;
             const textX = centerX + Math.cos(textAngle) * textRadius;
@@ -217,17 +225,26 @@ class SpinWheel {
             
             this.ctx.save();
             this.ctx.translate(textX, textY);
-            this.ctx.rotate(textAngle + Math.PI / 2);
+            
+            // Rotate text to be perpendicular to the radius (pointing outward)
+            let rotationAngle = textAngle;
+            
+            // Adjust rotation for readability (flip text if it would be upside down)
+            if (textAngle > Math.PI / 2 && textAngle < 3 * Math.PI / 2) {
+                rotationAngle += Math.PI;
+            }
+            
+            this.ctx.rotate(rotationAngle);
             
             this.ctx.fillStyle = '#fff';
             this.ctx.font = 'bold 14px Arial';
             this.ctx.textAlign = 'center';
             this.ctx.textBaseline = 'middle';
             
-            // Truncate long names
+            // Allow longer names since they're rendered vertically
             let displayName = person.name;
-            if (displayName.length > 12) {
-                displayName = displayName.substring(0, 10) + '...';
+            if (displayName.length > 20) {
+                displayName = displayName.substring(0, 18) + '...';
             }
             
             this.ctx.fillText(displayName, 0, 0);
@@ -607,6 +624,23 @@ class SpinWheel {
             gameNameInput.style.borderColor = '#e0e0e0';
             gameNameInput.placeholder = 'Enter game name';
         }, 3000);
+    }
+    
+    // Toggle winners visibility
+    toggleWinnersVisibility() {
+        const winnersSection = document.querySelector('.winners-section');
+        const toggleBtn = document.getElementById('toggleWinnersBtn');
+        const icon = toggleBtn.querySelector('i');
+        
+        if (winnersSection.classList.contains('hidden')) {
+            // Show winners section
+            winnersSection.classList.remove('hidden');
+            icon.className = 'fas fa-eye-slash';
+        } else {
+            // Hide winners section
+            winnersSection.classList.add('hidden');
+            icon.className = 'fas fa-eye';
+        }
     }
 }
 

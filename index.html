@@ -16,6 +16,20 @@
         <div class="main-content">
             <!-- Name Management Section -->
             <div class="name-section">
+                <!-- Game Management Controls -->
+                <div class="game-controls">
+                    <div class="game-controls-row">
+                        <input type="text" id="gameNameInput" placeholder="Enter game name" maxlength="30">
+                        <button id="saveGameBtn"><i class="fas fa-save"></i> Save Game</button>
+                    </div>
+                    <div class="game-controls-row">
+                        <select id="gameLoadSelect">
+                            <option value="">Load a saved game...</option>
+                        </select>
+                        <button id="deleteGameBtn" disabled><i class="fas fa-trash"></i> Delete Game</button>
+                    </div>
+                </div>
+                
                 <div class="input-group">
                     <input type="text" id="nameInput" placeholder="Enter a name (2-40 names total)" maxlength="50">
                     <button id="addNameBtn"><i class="fas fa-plus"></i> Add</button>

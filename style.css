@@ -56,6 +56,90 @@ header p {
     overflow-y: auto;
 }
 
+/* Game Management Controls */
+.game-controls {
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.game-controls-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.game-controls-row:last-child {
+    margin-bottom: 0;
+}
+
+#gameNameInput {
+    flex: 1;
+    padding: 10px 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: border-color 0.3s ease;
+}
+
+#gameNameInput:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+#gameLoadSelect {
+    flex: 1;
+    padding: 10px 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    background: white;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+#gameLoadSelect:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+#saveGameBtn, #deleteGameBtn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+#saveGameBtn {
+    background: linear-gradient(45deg, #28a745, #20c997);
+    color: white;
+}
+
+#saveGameBtn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+#deleteGameBtn {
+    background: #dc3545;
+    color: white;
+}
+
+#deleteGameBtn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+#deleteGameBtn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
 .input-group {
     display: flex;
     gap: 10px;
@@ -152,7 +236,7 @@ header p {
 }
 
 .wheel-container {
-    position: relative; /* ✅ FIXED: Ensures pointer is positioned relative to wheel */
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -170,7 +254,7 @@ header p {
 
 .wheel-pointer {
     position: absolute;
-    top: -25px; /* ✅ Adjusted for better visual alignment */
+    top: -15px;
     color: #fff;
     font-size: 3rem;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
@@ -429,5 +513,20 @@ header p {
     
     .winners-list {
         grid-template-columns: 1fr;
+    }
+    
+    .game-controls-row {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    #gameNameInput, #gameLoadSelect {
+        font-size: 0.85rem;
+        padding: 8px 10px;
+    }
+    
+    #saveGameBtn, #deleteGameBtn {
+        font-size: 0.85rem;
+        padding: 8px 12px;
     }
 }

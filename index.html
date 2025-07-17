@@ -1,95 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Spin the Wheel - Fair Selection</title>
-  <link rel="stylesheet" href="style.css" />
-  <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    rel="stylesheet"
-  />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin the Wheel - Fair Selection</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1><i class="fas fa-dharmachakra"></i> Spin the Wheel</h1>
-    </header>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-dharmachakra"></i> Spin the Wheel</h1>
+        </header>
 
-    <div class="main-content">
-      <!-- Name Management Section -->
-      <div class="name-section">
-        <!-- Game Management Controls -->
-        <div class="game-controls">
-          <div class="game-controls-row">
-            <input type="text" id="gameNameInput" placeholder="Enter game name" maxlength="30" />
-            <button id="saveGameBtn"><i class="fas fa-save"></i> Save Game</button>
-          </div>
-          <div class="game-controls-row">
-            <select id="gameLoadSelect">
-              <option value="">Load a saved game...</option>
-            </select>
-            <button id="deleteGameBtn" disabled>
-              <i class="fas fa-trash"></i> Delete Game
+        <div class="main-content">
+            <!-- Name Management Section -->
+            <div class="name-section">
+                <!-- Game Management Controls -->
+                <div class="game-controls">
+                    <div class="game-controls-row">
+                        <input type="text" id="gameNameInput" placeholder="Enter game name" maxlength="30">
+                        <button id="saveGameBtn"><i class="fas fa-save"></i> Save Game</button>
+                    </div>
+                    <div class="game-controls-row">
+                        <select id="gameLoadSelect">
+                            <option value="">Load a saved game...</option>
+                        </select>
+                        <button id="deleteGameBtn" disabled><i class="fas fa-trash"></i> Delete Game</button>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <input type="text" id="nameInput" placeholder="Enter a name (2-40 names total)" maxlength="50">
+                    <button id="addNameBtn"><i class="fas fa-plus"></i> Add</button>
+                </div>
+                
+                <div class="name-count">
+                    <span id="nameCount">0</span> names added
+                </div>
+
+                <div class="names-list">
+                    <div id="namesList"></div>
+                </div>
+            </div>
+
+            <!-- Wheel Section -->
+            <div class="wheel-section">
+                <div class="wheel-container">
+                    <canvas id="wheelCanvas" width="400" height="400"></canvas>
+                    <div class="wheel-pointer">
+                        <i class="fas fa-caret-down"></i>
+                    </div>
+                    <button id="spinBtn" class="spin-button" disabled>
+                        <i class="fas fa-play"></i>
+                        <span>SPIN</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Section -->
+        <div class="result-section" id="resultSection">
+            <div class="result-content">
+                <h2>🎉 Winner!</h2>
+                <div class="winner-name" id="winnerName"></div>
+                <div class="result-actions">
+                    <button id="spinAgainBtn">Spin Again</button>
+                    <button id="resetBtn">Reset Game</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Winners History -->
+        <div class="winners-container">
+            <button id="toggleWinnersBtn" class="toggle-winners-btn">
+                <i class="fas fa-eye-slash"></i>
             </button>
-          </div>
+            <div class="winners-section">
+                <h3>
+                    <i class="fas fa-trophy"></i> Previous Winners
+                </h3>
+                <div id="winnersList" class="winners-list">
+                    <p class="no-winners">No winners yet!</p>
+                </div>
+            </div>
         </div>
-
-        <div class="input-group">
-          <input type="text" id="nameInput" placeholder="Enter a name (2-40 names total)" maxlength="50" />
-          <button id="addNameBtn"><i class="fas fa-plus"></i> Add</button>
-        </div>
-
-        <div class="name-count">
-          <span id="nameCount">0</span> names added
-        </div>
-
-        <div class="names-list">
-          <div id="namesList"></div>
-        </div>
-      </div>
-
-      <!-- Wheel Section -->
-      <div class="wheel-section">
-        <div class="wheel-container">
-          <canvas id="wheelCanvas" width="400" height="400"></canvas>
-          <div class="wheel-pointer"><i class="fas fa-caret-down"></i></div>
-          <button id="spinBtn" class="spin-button" disabled>
-            <i class="fas fa-play"></i>
-            <span>SPIN</span>
-          </button>
-        </div>
-      </div>
     </div>
 
-    <!-- Result Section -->
-    <div class="result-section" id="resultSection">
-      <div class="result-content">
-        <h2>🎉 Winner!</h2>
-        <div class="winner-name" id="winnerName"></div>
-        <div class="result-actions">
-          <button id="spinAgainBtn">Spin Again</button>
-          <button id="resetBtn">Reset Game</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Winners History (entire block hidden when toggled) -->
-    <div class="winners-container" id="winnersContainer">
-      <div class="winners-section">
-        <h3>
-          <i class="fas fa-trophy"></i> Previous Winners
-          <button id="toggleWinnersBtn" class="toggle-winners-btn">
-            <i class="fas fa-eye-slash"></i>
-          </button>
-        </h3>
-        <div id="winnersList" class="winners-list">
-          <p class="no-winners">No winners yet!</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
